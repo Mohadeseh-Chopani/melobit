@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -17,20 +16,21 @@ import android.widget.Toast;
 import com.example.meloobit.adapter.MelobitAdapter;
 import com.example.meloobit.fragment.Search;
 import com.example.meloobit.fragment.Top_hits;
-import com.example.meloobit.fragment.Top_hits;
 import com.example.meloobit.manager.RequestManager;
+import com.example.meloobit.models.MelobitData;
 import com.example.meloobit.models.MelobitResponse;
-import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Button tophits;
     ImageView search;
 
-    RecyclerView recyclerview;
+    RecyclerView recyclerviewnew,recyclerviewremix;
     ProgressDialog dialog;
     RequestManager manager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
+
+
         tophits = findViewById(R.id.bt_top);
         search = findViewById(R.id.bt_search);
 
+        recyclerviewnew = findViewById(R.id.rcy_newsong);
+        recyclerviewremix =findViewById(R.id.rcy_remixsong);
 
-        recyclerview = findViewById(R.id.rcy_newsong);
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...⌛");
-        manager = new RequestManager(this);
-        manager.getFixture(listener);
+
+
 
         tophits = findViewById(R.id.bt_top);
         search = findViewById(R.id.bt_search);
@@ -71,19 +75,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        manager = new RequestManager(this);
+        manager.getFixture(listener);
 
     }
     private final ResponseListener listener = new ResponseListener() {
 
         @Override
-        public void didFetch(MelobitResponse response, String status) {
+        public void didFetch(List<MelobitData> list, String status) {
             dialog.dismiss();
+            recyclerviewnew.setHasFixedSize(true);
+            recyclerviewnew.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
+            MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, list);
+            recyclerviewnew.setAdapter(adapter);
 
-            recyclerview.setHasFixedSize(true);
-            recyclerview.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL , false));
-            MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, response.data);
-            recyclerview.setAdapter(adapter);
         }
 
         @Override
@@ -91,7 +96,19 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
         }
+
+        @Override
+        public void didFetch1(List<MelobitData> list, String status) {
+
+        }
+
+        @Override
+        public void didError1(String status) {
+
+        }
     };
+
+
 
 
 }

@@ -4,13 +4,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.transform.Result;
+
 public class MelobitData {
 
     int total;
     public List<Result> results;
+    public String id;
+    public Album album;
+    public List<Artist> artists;
+    public Audio audio;
+    public boolean copyrighted;
+    public boolean localized;
+    public String downloadCount;
+    public int duration;
+    public boolean hasVideo;
+    public String title;
+    public Image image;
+    public Date releaseDate;
+
     public class Album{
         public String name;
-        public ArrayList<Artist> artists;
+        public List<Artist> artists;
         public Image image;
         public Date releaseDate;
     }
@@ -22,6 +37,7 @@ public class MelobitData {
         public String type;
         public String sumSongsDownloadsCount;
         public Image image;
+
     }
 
     public class Audio{
@@ -59,7 +75,7 @@ public class MelobitData {
     public class Result{
         public String id;
         public Album album;
-        public ArrayList<Artist> artists;
+        public List<Artist> artists;
         public Audio audio;
         public boolean copyrighted;
         public boolean localized;

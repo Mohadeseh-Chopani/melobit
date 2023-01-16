@@ -1,9 +1,12 @@
 package com.example.meloobit.manager;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.meloobit.MainActivity;
+import com.example.meloobit.R;
 import com.example.meloobit.ResponseListener;
 import com.example.meloobit.models.MelobitResponse;
 
@@ -22,31 +25,38 @@ public class RequestManager {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    Callmelobit callmelobit = retrofit.create(Callmelobit.class);
     public RequestManager(Context context) {
         this.context = context;
     }
     public void getFixture(ResponseListener listener) {
-        Callmelobit callmelobit = retrofit.create(Callmelobit.class);
         Call<MelobitResponse> call = callmelobit.callmelobit();
-        call.enqueue(new Callback<MelobitResponse>() {
-            @Override
-            public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
-                if (!response.isSuccessful()){
-                    listener.didError(response.message());
-                    return;
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
                 }
-                listener.didFetch(response.body(), response.message());
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
-                listener.didError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private interface Callmelobit{
         @GET("song/new/0/11")
         Call<MelobitResponse> callmelobit();
     }
+
+
 }

@@ -5,16 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.meloobit.MainActivity;
+
 import com.example.meloobit.R;
 import com.example.meloobit.models.MelobitData;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MelobitAdapter extends RecyclerView.Adapter<MelobitViewHolder>{
@@ -31,8 +31,8 @@ public class MelobitAdapter extends RecyclerView.Adapter<MelobitViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MelobitViewHolder holder, int position) {
-        final MelobitData data = list.get(position);
-        Picasso.get().load(String.valueOf(data.results.get(position).image.cover_small)).into(holder.imageView);
+        Picasso.get().load(list.get(position).image.cover_small.url).into(holder.imageView);
+        holder.namenewsong.setText(list.get(position).title);
 
     }
 
@@ -44,8 +44,13 @@ public class MelobitAdapter extends RecyclerView.Adapter<MelobitViewHolder>{
 
 class MelobitViewHolder extends RecyclerView.ViewHolder{
     ImageView imageView;
+    TextView namenewsong,namenewsinger;
+
+
     public MelobitViewHolder(@NonNull View itemView) {
         super(itemView);
         imageView = itemView.findViewById(R.id.image_song1);
+        namenewsinger = itemView.findViewById(R.id.txt_namesinger);
+        namenewsong = itemView.findViewById(R.id.txt_namesong);
     }
 }
