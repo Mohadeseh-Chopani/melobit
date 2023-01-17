@@ -12,7 +12,7 @@ public class MelobitData {
     public List<Result> results;
     public String id;
     public Album album;
-    public List<Artist> artists;
+    public List<Artist> artists = new ArrayList<Artist>();;
     public Audio audio;
     public boolean copyrighted;
     public boolean localized;
@@ -23,11 +23,19 @@ public class MelobitData {
     public Image image;
     public Date releaseDate;
 
+    public int followersCount;
+    public String fullName;
+    public String type;
+    public String sumSongsDownloadsCount;
+
+
+
     public class Album{
         public String name;
-        public List<Artist> artists;
+        public List<Artist> artists = new ArrayList<Artist>();;
         public Image image;
         public Date releaseDate;
+        public String id;
     }
 
     public class Artist{
@@ -37,7 +45,6 @@ public class MelobitData {
         public String type;
         public String sumSongsDownloadsCount;
         public Image image;
-
     }
 
     public class Audio{
@@ -72,26 +79,6 @@ public class MelobitData {
         public String url;
     }
 
-    public class Result{
-        public String id;
-        public Album album;
-        public List<Artist> artists;
-        public Audio audio;
-        public boolean copyrighted;
-        public boolean localized;
-        public String downloadCount;
-        public int duration;
-        public boolean hasVideo;
-        public String title;
-        public Image image;
-        public Date releaseDate;
-    }
-
-    public class Root{
-        public int total;
-        public ArrayList<Result> results;
-    }
-
     public class Slider{
         public String url;
     }
@@ -103,4 +90,9 @@ public class MelobitData {
     public class ThumbnailSmall{
         public String url;
     }
+
+
+
+
+
 }

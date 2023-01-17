@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.meloobit.R;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Search#newInstance} factory method to

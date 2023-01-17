@@ -1,10 +1,8 @@
 package com.example.meloobit.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -13,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.meloobit.MainActivity;
 import com.example.meloobit.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -43,8 +40,8 @@ public class Top_hits extends Fragment {
         tab.setupWithViewPager(viewPager);
         MyViewPager myViewPager = new MyViewPager(getActivity().getSupportFragmentManager()
                 , FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        myViewPager.addFragment(new Pesian(),"Persian");
-        myViewPager.addFragment(new foreign(),"foreign");
+        myViewPager.addFragment(new Today(),"Today");
+        myViewPager.addFragment(new Thisweek(),"This Week");
         viewPager.setAdapter(myViewPager);
         return view;
     }

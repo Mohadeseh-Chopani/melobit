@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_height="700dp"
     tools:context=".fragment.Top_hits"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/background_dark"
@@ -37,30 +37,39 @@
 
 
 
-        <com.google.android.material.tabs.TabLayout
-            android:layout_width="300dp"
-            android:layout_gravity="center"
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tab_layout"
+        android:layout_marginTop="10dp"
+        >
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tab_layout"
-            android:layout_marginTop="10dp">
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tab_persian"
+            android:id="@+id/tab_today"
+            android:text="Today" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_week"
+            android:text="This Week"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_month"
+            android:text="This Month"/>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_year"
+            android:text="This Year"/>
 
-                android:text="Persian" />
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tab_foreign"
-                android:text="foreign"/>
-        </com.google.android.material.tabs.TabLayout>
-
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="600dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
 

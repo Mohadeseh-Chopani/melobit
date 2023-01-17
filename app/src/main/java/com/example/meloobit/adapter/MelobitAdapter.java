@@ -33,6 +33,7 @@ public class MelobitAdapter extends RecyclerView.Adapter<MelobitViewHolder>{
     public void onBindViewHolder(@NonNull MelobitViewHolder holder, int position) {
         Picasso.get().load(list.get(position).image.cover_small.url).into(holder.imageView);
         holder.namenewsong.setText(list.get(position).title);
+        holder.namenewsinger.setText(list.get(position).fullName);
 
     }
 

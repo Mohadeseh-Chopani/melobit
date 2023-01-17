@@ -5,8 +5,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.meloobit.MainActivity;
-import com.example.meloobit.R;
+import com.example.meloobit.Request;
 import com.example.meloobit.ResponseListener;
 import com.example.meloobit.models.MelobitResponse;
 
@@ -53,10 +52,101 @@ public class RequestManager {
 
     }
 
+    Callmelobit_terndattist callmelobit_trendartist = retrofit.create(Callmelobit_terndattist.class);
+    public void getFixture_trendartist(Request listener) {
+        Call<MelobitResponse> call = callmelobit_trendartist.callmelobit_trendartist();
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    Callmelobit_topday callmelobit_topday = retrofit.create(Callmelobit_topday.class);
+    public void getFixture_topday(Request listener) {
+        Call<MelobitResponse> call = callmelobit_topday.callmelobit_topday();
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    Callmelobit_thisweek callmelobit_thisweek = retrofit.create(Callmelobit_thisweek.class);
+    public void getFixture_thisweek(Request listener) {
+        Call<MelobitResponse> call = callmelobit_thisweek.callmelobit_thisweek();
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
+
     private interface Callmelobit{
         @GET("song/new/0/11")
         Call<MelobitResponse> callmelobit();
     }
 
+    private interface Callmelobit_terndattist{
+        @GET("artist/trending/0/4")
+        Call<MelobitResponse> callmelobit_trendartist();
+    }
 
+    private interface Callmelobit_topday{
+        @GET("song/top/day/0/100")
+        Call<MelobitResponse> callmelobit_topday();
+    }
+    private interface Callmelobit_thisweek{
+        @GET("song/top/week/0/100")
+        Call<MelobitResponse> callmelobit_thisweek();
+    }
 }

@@ -37,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
-
-
         tophits = findViewById(R.id.bt_top);
         search = findViewById(R.id.bt_search);
 
@@ -49,12 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...⌛");
-
-
-
-        tophits = findViewById(R.id.bt_top);
-        search = findViewById(R.id.bt_search);
-
 
         tophits.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +68,26 @@ public class MainActivity extends AppCompatActivity {
         manager = new RequestManager(this);
         manager.getFixture(listener);
 
+        manager.getFixture_trendartist(l);
+
+
     }
+    private final Request l = new Request() {
+        @Override
+        public void didFetch(List<MelobitData> list, String status) {
+            dialog.dismiss();
+            recyclerviewremix.setHasFixedSize(true);
+            recyclerviewremix.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
+            MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, list);
+            recyclerviewremix.setAdapter(adapter);
+        }
+
+        @Override
+        public void didError(String status) {
+            dialog.dismiss();
+            Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
+        }
+    };
     private final ResponseListener listener = new ResponseListener() {
 
         @Override
@@ -88,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             recyclerviewnew.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
             MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, list);
             recyclerviewnew.setAdapter(adapter);
-
         }
 
         @Override
@@ -97,19 +105,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
         }
 
-        @Override
-        public void didFetch1(List<MelobitData> list, String status) {
-
-        }
-
-        @Override
-        public void didError1(String status) {
-
-        }
     };
-
-
-
 
 }
 

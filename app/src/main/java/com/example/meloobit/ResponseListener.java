@@ -8,7 +8,4 @@ import java.util.List;
 public interface ResponseListener {
     void didFetch(List<MelobitData> list, String status);
     void didError(String status);
-    void didFetch1(List<MelobitData> list, String status);
-    void didError1(String status);
-
 }
