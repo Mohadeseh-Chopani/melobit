@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.meloobit.R;
-import com.example.meloobit.Request;
+import com.example.meloobit.ResponsLisrenerTerndArtist;
 import com.example.meloobit.adapter.MelobitAdapterTophits;
 import com.example.meloobit.manager.RequestManager;
 import com.example.meloobit.models.MelobitData;
@@ -43,7 +43,7 @@ public class Thisweek extends Fragment {
         return view;
     }
 
-    final Request l = new Request() {
+    final ResponsLisrenerTerndArtist l = new ResponsLisrenerTerndArtist() {
         @Override
         public void didFetch(List<MelobitData> list, String status) {
             dialog.dismiss();

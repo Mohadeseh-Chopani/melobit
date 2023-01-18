@@ -38,7 +38,7 @@ public class Top_hits extends Fragment {
         tab = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
         tab.setupWithViewPager(viewPager);
-        MyViewPager myViewPager = new MyViewPager(getActivity().getSupportFragmentManager()
+        MyViewPagerTab myViewPager = new MyViewPagerTab(getActivity().getSupportFragmentManager()
                 , FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         myViewPager.addFragment(new Today(),"Today");
         myViewPager.addFragment(new Thisweek(),"This Week");

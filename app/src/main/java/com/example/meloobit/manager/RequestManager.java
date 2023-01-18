@@ -5,8 +5,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.meloobit.Request;
+import com.example.meloobit.ResponsLisrenerTerndArtist;
 import com.example.meloobit.ResponseListener;
+import com.example.meloobit.ResponseListenerSlider;
 import com.example.meloobit.models.MelobitResponse;
 
 import retrofit2.Call;
@@ -53,9 +54,10 @@ public class RequestManager {
     }
 
     Callmelobit_terndattist callmelobit_trendartist = retrofit.create(Callmelobit_terndattist.class);
-    public void getFixture_trendartist(Request listener) {
-        Call<MelobitResponse> call = callmelobit_trendartist.callmelobit_trendartist();
+    public void getFixture_trendartist(ResponsLisrenerTerndArtist listener) {
+
         try {
+            Call<MelobitResponse> call = callmelobit_trendartist.callmelobit_trendartist();
             call.enqueue(new Callback<MelobitResponse>() {
                 @Override
                 public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
@@ -79,7 +81,7 @@ public class RequestManager {
 
 
     Callmelobit_topday callmelobit_topday = retrofit.create(Callmelobit_topday.class);
-    public void getFixture_topday(Request listener) {
+    public void getFixture_topday(ResponsLisrenerTerndArtist listener) {
         Call<MelobitResponse> call = callmelobit_topday.callmelobit_topday();
         try {
             call.enqueue(new Callback<MelobitResponse>() {
@@ -104,7 +106,7 @@ public class RequestManager {
     }
 
     Callmelobit_thisweek callmelobit_thisweek = retrofit.create(Callmelobit_thisweek.class);
-    public void getFixture_thisweek(Request listener) {
+    public void getFixture_thisweek(ResponsLisrenerTerndArtist listener) {
         Call<MelobitResponse> call = callmelobit_thisweek.callmelobit_thisweek();
         try {
             call.enqueue(new Callback<MelobitResponse>() {
@@ -129,6 +131,31 @@ public class RequestManager {
     }
 
 
+    Callmelobit_slider callmelobit_slider = retrofit.create(Callmelobit_slider.class);
+    public void getFixture_slider(ResponseListenerSlider listener) {
+        Call<MelobitResponse> call = callmelobit_slider.callmelobit_slider();
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
 
     private interface Callmelobit{
@@ -149,4 +176,11 @@ public class RequestManager {
         @GET("song/top/week/0/100")
         Call<MelobitResponse> callmelobit_thisweek();
     }
+
+    private interface Callmelobit_slider{
+        @GET("song/slider/latest")
+        Call<MelobitResponse> callmelobit_slider();
+    }
+
+
 }

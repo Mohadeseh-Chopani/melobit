@@ -3,18 +3,16 @@ package com.example.meloobit.fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 
-public class MyViewPager extends FragmentPagerAdapter {
+public class MyViewPagerTab extends FragmentPagerAdapter {
 
     private  final ArrayList<Fragment> fragmentsarray = new ArrayList<>();
     private final ArrayList<String> fragmentstitle = new ArrayList<>();
-    public MyViewPager(@NonNull FragmentManager fm, int behavior) {
+    public MyViewPagerTab(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
     }
 
