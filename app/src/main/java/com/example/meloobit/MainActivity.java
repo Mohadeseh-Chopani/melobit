@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity{
     ImageView search,home;
     ViewPager vp_slider;
     RecyclerView recyclerviewnew,recyclerviewremix;
-    ProgressDialog dialog;
+    ProgressDialogcustom dialog1;
     RequestManager manager;
 
 
@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity{
         recyclerviewnew = findViewById(R.id.rcy_newsong);
         recyclerviewremix =findViewById(R.id.rcy_remixsong);
 
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading...⌛");
+//        dialog = new ProgressDialog(this);
+//        dialog.setTitle("Loading...⌛");
 
+        dialog1 = new ProgressDialogcustom(MainActivity.this);
+        dialog1.show();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
     private final ResponsLisrenerTerndArtist l = new ResponsLisrenerTerndArtist() {
         @Override
         public void didFetch(List<MelobitData> list, String status) {
-            dialog.dismiss();
+            dialog1.dismiss();
             recyclerviewremix.setHasFixedSize(true);
             recyclerviewremix.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
             MelobitAdapterTrendartist adapter = new MelobitAdapterTrendartist(MainActivity.this, list);
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void didError(String status) {
-            dialog.dismiss();
+            dialog1.dismiss();
             Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
         }
     };
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void didFetch(List<MelobitData> list, String status) {
-            dialog.dismiss();
+            dialog1.dismiss();
             recyclerviewnew.setHasFixedSize(true);
             recyclerviewnew.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
             MelobitAdapterNewsong adapter = new MelobitAdapterNewsong(MainActivity.this, list);
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void didError(String status) {
-            dialog.dismiss();
+            dialog1.dismiss();
             Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
         }
 
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity{
 
         @Override
         public void didError(String status) {
-            dialog.dismiss();
+            dialog1.dismiss();
             Toast.makeText(MainActivity.this, status, Toast.LENGTH_SHORT).show();
         }
 

@@ -42,11 +42,17 @@ public class Song extends AppCompatActivity {
     int position;
     int size;
     FragmentManager fragmentManager;
+    ProgressDialogcustom dialog1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song);
+
+        dialog1 = new ProgressDialogcustom(Song.this);
+        dialog1.show();
+
+
 
         Intent i = getIntent();
         result = i.getStringExtra("result");
@@ -57,8 +63,8 @@ public class Song extends AppCompatActivity {
 
         Toast.makeText(Song.this, result, Toast.LENGTH_SHORT).show();
 
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading...⌛");
+//        dialog = new ProgressDialog(this);
+//        dialog.setTitle("Loading...⌛");
 
 
         if (result.equals("week")){
@@ -86,6 +92,7 @@ public class Song extends AppCompatActivity {
         back = findViewById(R.id.back);
         lyrics = findViewById(R.id.lyrics_song);
         nameartist = findViewById(R.id.name_artist);
+
 
 
 
@@ -171,6 +178,8 @@ public class Song extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+
+
     }
 
 
@@ -179,7 +188,6 @@ public class Song extends AppCompatActivity {
 
         @Override
         public void didFetch(List<MelobitData> list, String status) {
-            dialog.dismiss();
             Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
             namesong.setText(list.get(position).title);
             nameartist.setText(list.get(position).fullName);
@@ -189,11 +197,12 @@ public class Song extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            dialog1.dismiss();
         }
 
         @Override
         public void didError(String status) {
-            dialog.dismiss();
             Toast.makeText(Song.this, status, Toast.LENGTH_SHORT).show();
         }
     };
@@ -202,7 +211,6 @@ public class Song extends AppCompatActivity {
 
         @Override
         public void didFetch(List<MelobitData> list, String status) {
-            dialog.dismiss();
             Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
             namesong.setText(list.get(position).title);
             nameartist.setText(list.get(position).fullName);
@@ -212,11 +220,14 @@ public class Song extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            dialog1.dismiss();
+
+
         }
 
         @Override
         public void didError(String status) {
-            dialog.dismiss();
             Toast.makeText(Song.this, status, Toast.LENGTH_SHORT).show();
         }
 
