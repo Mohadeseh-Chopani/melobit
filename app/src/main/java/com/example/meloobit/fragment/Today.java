@@ -14,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.meloobit.R;
-import com.example.meloobit.ResponsLisrenerTerndArtist;
-import com.example.meloobit.adapter.MelobitAdapterTophits;
+import com.example.meloobit.ResponseListener;
+import com.example.meloobit.adapter.MelobitAdapterToday;
 import com.example.meloobit.manager.RequestManager;
 import com.example.meloobit.models.MelobitData;
 
@@ -40,19 +40,22 @@ public class Today extends Fragment {
         manager = new RequestManager(context);
         manager.getFixture_topday(l);
 
+
+
         return view;
 
 
 
     }
-    final ResponsLisrenerTerndArtist l = new ResponsLisrenerTerndArtist() {
+    final ResponseListener l = new ResponseListener() {
         @Override
         public void didFetch(List<MelobitData> list, String status) {
             dialog.dismiss();
             rv_topday.setHasFixedSize(true);
             rv_topday.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL , false));
-            MelobitAdapterTophits adapter = new MelobitAdapterTophits(context, list);
+            MelobitAdapterToday adapter = new MelobitAdapterToday(context, list);
             rv_topday.setAdapter(adapter);
+
         }
 
         @Override

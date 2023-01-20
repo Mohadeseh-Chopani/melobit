@@ -28,6 +28,10 @@ public class MelobitData {
     public String type;
     public String sumSongsDownloadsCount;
 
+    public String lyrics;
+
+
+
 
 
     public class Album{
@@ -35,7 +39,6 @@ public class MelobitData {
         public List<Artist> artists = new ArrayList<Artist>();;
         public Image image;
         public Date releaseDate;
-        public String id;
     }
 
     public class Artist{
@@ -45,6 +48,7 @@ public class MelobitData {
         public String type;
         public String sumSongsDownloadsCount;
         public Image image;
+
     }
 
     public class Audio{
@@ -90,6 +94,7 @@ public class MelobitData {
     public class ThumbnailSmall{
         public String url;
     }
+
 
 
 

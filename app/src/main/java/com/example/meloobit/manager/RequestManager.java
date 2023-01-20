@@ -6,6 +6,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.meloobit.ResponsLisrenerTerndArtist;
+import com.example.meloobit.ResponsListener1;
 import com.example.meloobit.ResponseListener;
 import com.example.meloobit.ResponseListenerSlider;
 import com.example.meloobit.models.MelobitResponse;
@@ -81,7 +82,7 @@ public class RequestManager {
 
 
     Callmelobit_topday callmelobit_topday = retrofit.create(Callmelobit_topday.class);
-    public void getFixture_topday(ResponsLisrenerTerndArtist listener) {
+    public void getFixture_topday(ResponseListener listener) {
         Call<MelobitResponse> call = callmelobit_topday.callmelobit_topday();
         try {
             call.enqueue(new Callback<MelobitResponse>() {
@@ -106,7 +107,7 @@ public class RequestManager {
     }
 
     Callmelobit_thisweek callmelobit_thisweek = retrofit.create(Callmelobit_thisweek.class);
-    public void getFixture_thisweek(ResponsLisrenerTerndArtist listener) {
+    public void getFixture_thisweek(ResponseListener listener) {
         Call<MelobitResponse> call = callmelobit_thisweek.callmelobit_thisweek();
         try {
             call.enqueue(new Callback<MelobitResponse>() {
@@ -138,6 +139,31 @@ public class RequestManager {
             call.enqueue(new Callback<MelobitResponse>() {
                 @Override
                 public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()) {
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(context, "" + e, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    Callmelobit_DetalisSong callmelobit_detalisSong = retrofit.create(Callmelobit_DetalisSong.class);
+    public void getFixture_detalissong(ResponseListener listener) {
+        Call<MelobitResponse> call = callmelobit_detalisSong.callmelobit_detalissong();
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
                     if (!response.isSuccessful()){
                         listener.didError(response.message());
                         return;
@@ -155,6 +181,13 @@ public class RequestManager {
         }
 
     }
+
+
+
+
+
+
+
 
 
 
@@ -181,6 +214,12 @@ public class RequestManager {
         @GET("song/slider/latest")
         Call<MelobitResponse> callmelobit_slider();
     }
+
+    private interface Callmelobit_DetalisSong{
+        @GET("song/NThRYnA")
+        Call<MelobitResponse> callmelobit_detalissong();
+    }
+
 
 
 }

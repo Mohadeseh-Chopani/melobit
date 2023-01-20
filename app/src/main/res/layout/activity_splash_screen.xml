@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:fontFamily="sans-serif-black"
         android:gravity="center"
-        android:text="Melo Bit"
-        android:textSize="40sp" />
+        android:text=":)"
+        android:textSize="90sp" />
 
 </LinearLayout>

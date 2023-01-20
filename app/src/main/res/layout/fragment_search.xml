@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_height="700dp"
     tools:context=".fragment.Search"
     android:orientation="vertical"
     android:background="@android:color/background_dark">

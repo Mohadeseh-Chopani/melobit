@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.meloobit.adapter.MelobitAdapter;
+import com.example.meloobit.adapter.MelobitAdapterNewsong;
+import com.example.meloobit.adapter.MelobitAdapterTrendartist;
 import com.example.meloobit.adapter.ViewPagerAdapter;
 import com.example.meloobit.fragment.Search;
 import com.example.meloobit.fragment.Top_hits;
@@ -23,9 +25,9 @@ import com.example.meloobit.models.MelobitData;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     Button tophits;
-    ImageView search;
+    ImageView search,home;
     ViewPager vp_slider;
     RecyclerView recyclerviewnew,recyclerviewremix;
     ProgressDialog dialog;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         tophits = findViewById(R.id.bt_top);
         search = findViewById(R.id.bt_search);
+        home =findViewById(R.id.bt_home);
+
 
         recyclerviewnew = findViewById(R.id.rcy_newsong);
         recyclerviewremix =findViewById(R.id.rcy_remixsong);
@@ -50,10 +54,16 @@ public class MainActivity extends AppCompatActivity {
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...⌛");
 
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,MainActivity.class));
+            }
+        });
         tophits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Fragment frag = new Top_hits();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.homelayout, frag).commit();
@@ -82,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             recyclerviewremix.setHasFixedSize(true);
             recyclerviewremix.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
-            MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, list);
+            MelobitAdapterTrendartist adapter = new MelobitAdapterTrendartist(MainActivity.this, list);
             recyclerviewremix.setAdapter(adapter);
         }
 
@@ -99,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             recyclerviewnew.setHasFixedSize(true);
             recyclerviewnew.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL , false));
-            MelobitAdapter adapter = new MelobitAdapter(MainActivity.this, list);
+            MelobitAdapterNewsong adapter = new MelobitAdapterNewsong(MainActivity.this, list);
             recyclerviewnew.setAdapter(adapter);
         }
 

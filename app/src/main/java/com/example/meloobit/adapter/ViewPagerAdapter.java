@@ -1,6 +1,7 @@
 package com.example.meloobit.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.example.meloobit.R;
+import com.example.meloobit.Song;
 import com.example.meloobit.models.MelobitData;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +43,17 @@ public class ViewPagerAdapter extends PagerAdapter {
         ImageView imageView = view.findViewById(R.id.image_slider);
         Picasso.get().load(list.get(position).image.slider.url).into(imageView);
         container.addView(view);
+        int Position = position;
+        String result = "latest";
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, Song.class);
+                intent.putExtra("result",result);
+                intent.putExtra("position",Position);
+                view.getContext().startActivity(intent);
+            }
+        });
         return view;
     }
 

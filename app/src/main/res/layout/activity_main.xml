@@ -40,7 +40,6 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:background="@android:color/system_neutral1_800"
                     android:layout_weight="1"
                     android:drawableLeft="@drawable/icon_top"
                     android:text="Top hits"
