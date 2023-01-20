@@ -1,16 +1,24 @@
 package com.example.meloobit;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,10 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.meloobit.adapter.MelobitAdapterThisweek;
-import com.example.meloobit.adapter.ViewPagerAdapter;
 import com.example.meloobit.fragment.Detalis;
-import com.example.meloobit.fragment.Top_hits;
 import com.example.meloobit.manager.RequestManager;
 import com.example.meloobit.models.MelobitData;
 import com.squareup.picasso.Picasso;
@@ -30,10 +35,12 @@ import java.io.IOException;
 import java.util.List;
 
 public class Song extends AppCompatActivity {
-    ImageView image_cover,play,previous,next,back;
+
+    private static final int PERMISSIONS_STORAGE_CODE = 1000;
+    ImageView image_cover,play,previous,next,back,download;
     ProgressDialog dialog;
     RequestManager manager;
-    String url_cover,name_song,url_song,out,out2,result;;
+    String url_cover,name_song,url_song,out,out2,result, urlsong;
     TextView namesong, pass, due, lyrics,nameartist;
     SeekBar seekBar;
     MediaPlayer mediaplayer = new MediaPlayer();;
@@ -43,6 +50,7 @@ public class Song extends AppCompatActivity {
     int size;
     FragmentManager fragmentManager;
     ProgressDialogcustom dialog1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +71,6 @@ public class Song extends AppCompatActivity {
 
         Toast.makeText(Song.this, result, Toast.LENGTH_SHORT).show();
 
-//        dialog = new ProgressDialog(this);
-//        dialog.setTitle("Loading...⌛");
 
 
         if (result.equals("week")){
@@ -92,6 +98,7 @@ public class Song extends AppCompatActivity {
         back = findViewById(R.id.back);
         lyrics = findViewById(R.id.lyrics_song);
         nameartist = findViewById(R.id.name_artist);
+        download = findViewById(R.id.download);
 
 
 
@@ -133,11 +140,7 @@ public class Song extends AppCompatActivity {
             }
         });
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            }
-        });
+
 
         lyrics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,21 +156,12 @@ public class Song extends AppCompatActivity {
                 Toast.makeText(Song.this, "lyrics", Toast.LENGTH_SHORT).show();
 
 
-//                Fragment argumentFragment = new ArgumentFragment();//Get Fragment Instance
-//                Bundle data = new Bundle();//Use bundle to pass data
-//                data.putString("data", "This is Argument Fragment");//put string, int, etc in bundle with a key value
-//                argumentFragment.setArguments(data);//Finally set argument bundle to fragment
-//                fragmentManager.beginTransaction().replace(R.id.fragmentContainer, argumentFragment).commit();
+
 
             }
         });
 
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +172,7 @@ public class Song extends AppCompatActivity {
                 view.getContext().startActivity(intent);
             }
         });
+
 
 
     }
@@ -191,6 +186,7 @@ public class Song extends AppCompatActivity {
             Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
             namesong.setText(list.get(position).title);
             nameartist.setText(list.get(position).fullName);
+            urlsong = list.get(position).audio.medium.url;
             try {
                 mediaplayer.setDataSource(list.get(position).audio.medium.url);
                 mediaplayer.prepare();
@@ -199,11 +195,66 @@ public class Song extends AppCompatActivity {
             }
 
             dialog1.dismiss();
+
+
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mediaplayer.isPlaying()) {
+                        mediaplayer.stop();
+                        seekBar.setProgress(0);
+                        pass.setText("00:00");
+                        due.setText("00:00");
+                    }
+                    position=position+1;
+                    Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
+                    namesong.setText(list.get(position).title);
+                    nameartist.setText(list.get(position).fullName);
+//                    try {
+//                        //  mediaplayer.setDataSource(list.get(position+1).audio.medium.url);
+//                        mediaplayer.prepare();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    initializeSeekbar();
+                }
+            });
+
+            previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mediaplayer.isPlaying()) {
+                        mediaplayer.stop();
+                        seekBar.setProgress(0);
+                        pass.setText("00:00");
+                        due.setText("00:00");
+                    }
+                    position=position-1;
+                    Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
+                    namesong.setText(list.get(position).title);
+                    nameartist.setText(list.get(position).fullName);
+                    try {
+                        mediaplayer.setDataSource(list.get(position).audio.medium.url);
+                        mediaplayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    initializeSeekbar();
+                }
+            });
+
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Download(list);
+                }
+            });
         }
 
         @Override
         public void didError(String status) {
             Toast.makeText(Song.this, status, Toast.LENGTH_SHORT).show();
+            dialog1.dismiss();
         }
     };
 
@@ -223,15 +274,73 @@ public class Song extends AppCompatActivity {
 
             dialog1.dismiss();
 
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mediaplayer.isPlaying()) {
+                        mediaplayer.stop();
+                        seekBar.setProgress(0);
+                        pass.setText("00:00");
+                        due.setText("00:00");
+                    }
+                    position=position+1;
+                    Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
+                    namesong.setText(list.get(position).title);
+                    nameartist.setText(list.get(position).fullName);
+//                    try {
+//                        mediaplayer.release();
+//                        mediaplayer.setDataSource(list.get(position).audio.medium.url);
+//                        mediaplayer.prepare();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    initializeSeekbar();
+                }
+            });
+
+            previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mediaplayer.isPlaying()) {
+                        mediaplayer.stop();
+                        seekBar.setProgress(0);
+                        pass.setText("00:00");
+                        due.setText("00:00");
+                    }
+                    position=position-1;
+                    Picasso.get().load(list.get(position).image.cover_small.url).into(image_cover);
+                    namesong.setText(list.get(position).title);
+                    nameartist.setText(list.get(position).fullName);
+//                    try {
+//                        mediaplayer.release();
+//                        mediaplayer.setDataSource(list.get(position).audio.medium.url);
+//                        mediaplayer.prepare();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    initializeSeekbar();
+                }
+            });
+
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Download(list);
+                }
+            });
+
 
         }
 
         @Override
         public void didError(String status) {
             Toast.makeText(Song.this, status, Toast.LENGTH_SHORT).show();
+            dialog1.dismiss();
         }
 
     };
+
+
 
 
 
@@ -256,6 +365,51 @@ public class Song extends AppCompatActivity {
         });
     }
 
+    private void Download(List<MelobitData> list){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_DENIED){
+                String[] permissions ={Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                requestPermissions(permissions,PERMISSIONS_STORAGE_CODE);}
+            else {
+                startDownload(list);
+            }
+        }
+        else{
+            startDownload(list);
+        }
+    }
+
+    private void startDownload(List<MelobitData> list){
+        String url =list.get(position).audio.medium.url;
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
+                DownloadManager.Request.NETWORK_MOBILE);
+        request.setDescription("Downloading file....");
+        request.allowScanningByMediaScanner();
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setTitle(list.get(position).title);
+        request.setMimeType("audio/MP3");
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
+        DownloadManager manager=(DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        manager.enqueue(request);
+
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults, List<MelobitData> list) {
+        switch (requestCode){
+            case PERMISSIONS_STORAGE_CODE:{
+                if(grantResults.length >0 && grantResults[0]==
+                        PackageManager.PERMISSION_GRANTED){
+                    startDownload(list);
+                }
+                else {
+                    Toast.makeText(this,"permission denied...",Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 
 
 

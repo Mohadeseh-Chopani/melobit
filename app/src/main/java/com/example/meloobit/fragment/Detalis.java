@@ -65,7 +65,7 @@ public class Detalis extends Fragment {
             dialog.dismiss();
 
             try {
-                lyrics.setText(list.get(0).lyrics);
+                lyrics.setText(list.get(position).lyrics);
             }catch (Exception e) {
                 e.printStackTrace();
             }

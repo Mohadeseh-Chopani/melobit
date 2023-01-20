@@ -11,11 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.meloobit.R;
-import com.example.meloobit.ResponsListener1;
 import com.example.meloobit.ResponseListener;
 import com.example.meloobit.adapter.MelobitAdapterThisweek;
 import com.example.meloobit.manager.RequestManager;

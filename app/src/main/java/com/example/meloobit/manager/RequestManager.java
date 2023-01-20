@@ -6,7 +6,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.meloobit.ResponsLisrenerTerndArtist;
-import com.example.meloobit.ResponsListener1;
 import com.example.meloobit.ResponseListener;
 import com.example.meloobit.ResponseListenerSlider;
 import com.example.meloobit.models.MelobitResponse;
@@ -17,6 +16,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public class RequestManager {
 
@@ -182,6 +183,31 @@ public class RequestManager {
 
     }
 
+    Callmelobit_search callmelobit_search = retrofit.create(Callmelobit_search.class);
+    public void getFixture_search(ResponseListener listener,String query) {
+        Call<MelobitResponse> call = callmelobit_search.callmelobit_search(query);
+        try {
+            call.enqueue(new Callback<MelobitResponse>() {
+                @Override
+                public void onResponse(Call<MelobitResponse> call, Response<MelobitResponse> response) {
+                    if (!response.isSuccessful()){
+                        listener.didError(response.message());
+                        return;
+                    }
+                    listener.didFetch(response.body().getResults(), response.message());
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<MelobitResponse> call, @NonNull Throwable t) {
+                    listener.didError(t.getMessage());
+                }
+            });
+        }catch (Exception e) {
+            Toast.makeText(context,""+e,Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
 
 
@@ -219,6 +245,12 @@ public class RequestManager {
         @GET("song/NThRYnA")
         Call<MelobitResponse> callmelobit_detalissong();
     }
+
+    private interface Callmelobit_search{
+        @GET("search/query/{query}/0/50")
+        Call<MelobitResponse> callmelobit_search(@Path("query") String query);
+    }
+
 
 
 

@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity{
         recyclerviewnew = findViewById(R.id.rcy_newsong);
         recyclerviewremix =findViewById(R.id.rcy_remixsong);
 
-//        dialog = new ProgressDialog(this);
-//        dialog.setTitle("Loading...⌛");
 
         dialog1 = new ProgressDialogcustom(MainActivity.this);
         dialog1.show();
